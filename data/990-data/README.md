@@ -15,7 +15,7 @@ https://www.dropbox.com/scl/fi/2mtgxb9qu952mxjq9o7dd/ez_1320.csv?rlkey=t0zxj0ipu
 The link below contains 990 data entries combined from 2013-2020, including the names of the original files they were extracted from:
 https://www.dropbox.com/scl/fi/b8s43a6n8qe9o6jmbf17u/full_reg.csv?rlkey=orm50j8b13azg7x673az4cisz&st=n5opbtu9&dl=0
 
-# EO-BMF Data
+# Exempt Organizations Business Master File Extract (EO-BMF) Data
 Historical EO-BMF data as downloaded directly from the National Center for Charitable Statistics:
 https://www.dropbox.com/scl/fo/r4zhuo9isz2yrvcvsdg8u/ALHdtX2q-JXOeuL4nIa0CxU?rlkey=zowjf16ko805j87qme2r0jogp&st=i40vbo3g&dl=0
 
