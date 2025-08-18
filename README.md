@@ -1,4 +1,4 @@
-## This repository contains all data, pre-processing, scraping, and analysis R and Python scripts used to create this dissertation project. If you have any questions or concerns, please don't hestitate to reach out.
+## This repository contains all data, pre-processing, scraping, and analysis R and Python scripts used to create this dissertation project. If you have any questions or concerns, please contact the author (Chelsea Green).
 
 ## Abstract
 
