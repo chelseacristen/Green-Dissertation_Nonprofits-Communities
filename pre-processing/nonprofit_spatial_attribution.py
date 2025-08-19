@@ -464,3 +464,94 @@ for folder in os.listdir(mini_dir):
 #Export combined csv file:
 ngos.to_csv(os.path.join(mini_dir, 'mini_combined.csv'))
 print('final mini join exported')
+
+#Extract the tax year and tract geoids from this file:
+tractinfo= ngos[['tax_year','TRGEOID']]
+print('tract info created')
+del(ngos)
+tractinfo.to_csv('your_directory/tractinfo.csv')
+print('done')
+
+#Create new folder to contain data with geospatial joined features *and* full IRS financial data (not just EOBMF data):
+#This is only going to be possible for 2012 and after because those are the only years I have full IRS financial data for:
+#os.mkdir("your_directory/Geojoined_990")
+
+geojoined_dir = "your_directory/Geojoined_990"
+os.mkdir(geojoined_dir)
+
+all_files = os.listdir(mini_dir)
+after2012 = []
+
+phrase1 = '201[2-9]{1}.*'
+phrase2 = '20[2-9]{1}[0-9]{1}.*'
+
+import re 
+import os
+for file in all_files:
+    a = re.findall(phrase1, str(file))
+    if(len(a)==0):
+        a = re.findall(phrase2, str(file))
+        if(len(a)>0):
+            after2012.append(a[0])
+    else:
+        after2012.append(a[0])
+
+#Create new subfolders for each year, state, type of filing (eg. "2010CAEZ", "2019ND990")
+for folder in after2012:
+    ez = folder+ "EZ"
+    reg = folder+ "990"
+    path = os.path.join(geojoined_dir, ez)
+    os.mkdir(path)
+    path = os.path.join(geojoined_dir, reg)
+    os.mkdir(path)
+    print(path, ' created!')
+
+#Loading in the IRS EZ files:
+downloads = "your_directory"
+ezfile = "ez_1220_efficient.csv"
+ezfile = os.path.join(downloads, ezfile)
+ez = pandas.read_csv(ezfile)
+
+#Loading in the IRS 990 files:
+regfile = "full_reg_efficient.csv"
+regfile = os.path.join(downloads, regfile)
+reg = pandas.read_csv(regfile)
+print("done")
+
+#***STEP 2
+#All of the EINs in these two datasets end in '.0'. In addition, some of the EINs are less than 9 characters long, and thus 
+#need '0's appended to the front.
+
+#Eliminate '.0' from the end of the EINS in both the 990(reg) and ez datasets
+datasets = [ez, reg]
+
+for dat in datasets:
+    #Create a tax year column for both datasets
+    s= dat['tax_pd'].astype(str)
+    dat['tax_year'] = s.str.extract(r'(\d{4})')
+    dat['tax_year'] =dat['tax_year'].astype(str)
+    dat['ein']= dat['ein'].astype(str)
+    
+    #Making sure that the EINs all have a length of 9 characters, starting with zeros if they are 8 or 7 characters long
+    eins = dat['ein'].tolist()
+    phrase = r"[0-9]+(?=\.)"
+
+    new_eins = []
+    for ein in eins:
+        num = re.findall(phrase, ein)
+        num =''.join(num)
+        new_eins.append(num)
+    
+    c = []
+    for ein in new_eins:
+        if(len(ein)==8):
+            c.append('0'+ein)
+        elif(len(ein)==7):
+            c.append('00'+ein)
+        else:
+            c.append(ein)
+        
+    new_eins=c
+    #Take this new list of EINs and replace the existing list of EINs in the dataset:
+    dat['ein'] = new_eins
+    print(dat, "done")
