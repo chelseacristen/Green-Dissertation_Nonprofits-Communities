@@ -15,12 +15,19 @@ Visualization Focus: Wealth determinants, demographic relationships, organizatio
 
 **3: Statistical Modeling Pipeline (nonprofit_wealth_modeling.py):** Econometric modeling system deploying machine learning feature selection and advanced statistical methods to identify determinants of nonprofit organizational wealth. The script implements LASSO regularization for automated feature selection followed by OLS regression with clustered standard errors to account for geographic correlation and ensure reliable statistical inference.
 
-Models:
+Key Functions:
 
-- Dependent Variables: Log assets, log income, binary wealth indicators
-- ML Methods: LASSO-regularized feature selection, grid search cross-validation
-- Statistical Methods: OLS with clustered standard errors, logistic regression with L1 penalization
+- LASSO regularization for automated feature selection across variable categories
+- Multi-model comparison framework testing organizational, environmental, demographic, and policy effects
+- Clustered and heteroskedasticity-consistent standard error corrections for geographic correlation
+- Race-organization interaction effects and multiple dependent variable specifications
+
+Methods:
+
+- Dependent Variables: Log assets/income, binary wealth indicators
+- Techniques: LASSO feature selection, OLS with clustered standard errors, L1-penalized logistic regression
 - Variable Categories: Organizational, environmental, demographic, historical policy effects
+- Evaluation: Cross-validation, R²/AIC/BIC model comparison
 
 *Dependencies: pandas, statsmodels, sklearn, numpy, scipy
 Statistical Methods: LASSO regularization, econometric modeling, clustered inference*
