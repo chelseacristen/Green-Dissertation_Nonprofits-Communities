@@ -393,7 +393,7 @@ joinedv2_dir = "your_directory" + '/Joinedv2'
 
 #Create new folder and subfolders to contain a MUCH scaled down version of the Joined folders and files. This will aid in data 
 #analysis later, namely reducing the size of all the files.
-mini_dir = "C:/Users/steve/Documents" + '/Mini_Joined'
+mini_dir = "your_directory" + '/Mini_Joined'
 os.mkdir(mini_dir)
 
 for idx, folder in enumerate(os.listdir(joinedv2_dir)):
@@ -555,3 +555,100 @@ for dat in datasets:
     #Take this new list of EINs and replace the existing list of EINs in the dataset:
     dat['ein'] = new_eins
     print(dat, "done")
+
+#Merging geo-coded 990 EO-BMF data with full 990 and 990EZ filings for each EIN-year entry in my dataset:
+
+for folder in after2012:
+    filename = folder + "minijoined.csv" 
+    fileloc = os.path.join(mini_dir, folder, filename)
+    df = pandas.read_csv(fileloc, low_memory=False)
+
+    #DON'T THINK I NEED THIS ENTIRE SECTION
+    #Making sure that the tax years are integer values and EINs are string values:
+    df['ein'] = df['ein'].astype(str) #make this a character value
+    df['tax_year'] = df['tax_year'].astype(str) #make this a character value
+
+    #DON'T THINK I NEED THIS ENTIRE SECTION EITHER
+    #Make sure that all EINs have the same number of characters (some have 7 or 8, and those should start with a zero):
+    c = []
+    for ein in df['ein']:
+        if(len(ein)==8):
+            c.append('0'+ein)
+        elif(len(ein)==7):
+            c.append('00'+ein)
+        else:
+            c.append(ein)
+    df['ein'] = c
+
+    #Merge the Joined CSV file with the 2012-2020 990 Return dataframe:
+    merged_ez = pandas.merge(df, ez, how='inner', on=['ein', 'tax_year'])
+    merged_reg = pandas.merge(df, reg, how='inner', on=['ein', 'tax_year'])
+
+    newname_ez = os.path.join(geojoined_dir, folder+'EZ', "EZgeojoined.csv")
+    newname_reg = os.path.join(geojoined_dir, folder+'990', "990geojoined.csv")
+    
+    #Save the geojoined file to the new working directory as csv file:
+    merged_ez.to_csv(newname_ez, sep=',', index=False, header=True)
+    merged_reg.to_csv(newname_reg, sep=',', index=False, header=True)
+    print(folder, "complete")
+    
+    #Clear space in memory for the next round
+    del(merged_reg)
+    del(merged_ez)
+
+#Combine all of the full 990s together into one dataframe:
+
+geojoined_dir = 'your_directory/GeoJoined_990'
+phrase = r'[0-9]{4}[A-Z]{2}990'
+year = r'[0-9]{4}'
+geojoined_990 = []
+years = [*range(2012,2021, 1)] #Creating a list of years that my ACS variables will cover
+
+for folder in os.listdir(geojoined_dir): 
+    if re.match(phrase, folder):
+        geojoined_990.append(folder)
+
+
+for y in years:
+    counter =1
+    for f in geojoined_990:
+        if(re.findall(year, f)[0]==str(y)):
+            if counter==1:
+                ngos = pd.read_csv(os.path.join(geojoined_dir, f, '990geojoined.csv'))
+            else:
+                ngos2 = pd.read_csv(os.path.join(geojoined_dir, f, '990geojoined.csv'))
+                ngos = pd.concat([ngos, ngos2])
+                print(f, ' done!')
+            counter = counter +1
+    else:
+        print('next!')
+    ngos.to_csv('your_directory/GeoJoined_990/full_990_'+str(y)+'.csv')
+
+#Combine all EZs together into one dataframe:
+
+geojoined_dir = 'your_directory/GeoJoined_990'
+phrase = r'[0-9]{4}[A-Z]{2}EZ'
+year = r'[0-9]{4}'
+geojoined_990 = []
+years = [*range(2012,2021, 1)] #Creating a list of years that my ACS variables will cover
+
+for folder in os.listdir(geojoined_dir): 
+    if re.match(phrase, folder):
+        geojoined_990.append(folder)
+
+
+for y in years:
+    counter =1
+    for f in geojoined_990:
+        if(re.findall(year, f)[0]==str(y)):
+            if counter==1:
+                ngos = pd.read_csv(os.path.join(geojoined_dir, f, 'EZgeojoined.csv'))
+            else:
+                ngos2 = pd.read_csv(os.path.join(geojoined_dir, f, 'EZgeojoined.csv'))
+                ngos = pd.concat([ngos, ngos2])
+                print(f, ' done!')
+            counter = counter +1
+    else:
+        print('next!')
+    ngos.to_csv('your_directory/GeoJoined_990/EZ_'+str(y)+'.csv')
+
