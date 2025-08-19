@@ -9,6 +9,7 @@ Input: Processed nonprofit datasets, government grants data, NTEE classification
 Analysis Focus: 501(c)(3) organizations with validated geographic attribution*
 
 **2: Exploratory Data Analysis (nonprofit_wealth_eda.py):** Statistical exploration and visualization pipeline for understanding relationships between nonprofit wealth, community characteristics, and organizational factors. The script generates visualizations, like masked heatmaps, and correlation analyses to identify key patterns in nonprofit financial data before formal modeling.
+
 *Dependencies: pandas, numpy, seaborn, matplotlib
 Visualization Focus: Wealth determinants, demographic relationships, organizational patterns*
 
