@@ -17,7 +17,7 @@ Data Sources: Combined EO-BMF data, IRS Statistics of Income, IRS Publication 78
 *Dependencies: arcpy, pandas, numpy
 Requirements: ArcGIS Desktop/Pro license, configured address locator*
 
-4: **census_tract_downloader.py**: Created automated web scraping and geospatial processing script that downloads all shapefiles from the Census Bureau's TIGER/Line database for 2000, 2010, and 2020 for Counties, Census Tracts, Census Block Groups, Congressional Districts, American Indian / Alaska Native / Native Hawaiian Areas 2020 (AIANNH), . The script scrapes file links, downloads state-specific zip archives, extracts shapefiles, and combines them into a single nationwide area-specific shapefiles for spatial analysis.
+4: **census_geography_downloader.py**: Created automated web scraping and geospatial processing script that downloads all shapefiles from the Census Bureau's TIGER/Line database for 2000, 2010, and 2020 for Counties, Census Tracts, Census Block Groups, Congressional Districts, American Indian / Alaska Native / Native Hawaiian Areas 2020 (AIANNH), . The script scrapes file links, downloads state-specific zip archives, extracts shapefiles, and combines them into a single nationwide area-specific shapefiles for spatial analysis.
   
 *Dependencies: geopandas, pandas, beautifulsoup4, requests*
    
