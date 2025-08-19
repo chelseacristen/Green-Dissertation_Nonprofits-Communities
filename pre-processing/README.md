@@ -27,11 +27,11 @@ Input: Raw Census TIGER/Line shapefiles from downloader script*
 *Dependencies: arcpy, pandas, numpy
 Requirements: ArcGIS Desktop/Pro license, configured address locator*
 
-6: **Spatial Join and Geographic Attribution Pipeline (nonprofit_spatial_attribution.py):** This script performs comprehensive spatial joins between geocoded nonprofit organizations and multi-level Census geographic boundaries to assign geographic identifiers to each organization. The system processes nonprofit address data by state-year combinations and attributes them with corresponding Census Tract, County, Block Group, Congressional District, and Native American Area identifiers based on their spatial location.
+6: **Spatial Join and Geographic Attribution Pipeline (nonprofit_spatial_attribution.py):** This script performs spatial joins between geocoded nonprofit organizations and multi-level Census geographic boundaries to assign geographic identifiers to each organization. The system processes nonprofit address data across multiple decades (2000s, 2010s, 2020s) by state-year combinations and attributes them with corresponding Census Tract, County, Block Group, Congressional District, and Native American Area identifiers based on their spatial location.
 
 *Dependencies: geopandas, pandas, os, re, numpy
 Input: Geocoded nonprofit shapefiles, standardized Census boundary files
-Temporal Logic: Uses 2010 boundaries for 2010-2019 data, 2020 boundaries for 2020+ data*
+Temporal Logic: Uses 2000 boundaries for 2000-2009 data, 2010 boundaries for 2010-2019 data, 2020 boundaries for 2020+ data*
 
 7: **IRS Form 990 PDF Data Extraction Script (irs_990_pdf_scraper.py):** Comprehensive web scraping and OCR pipeline that downloads IRS Form 990 PDF archives by year, extracts specific pages, converts them to images, and uses optical character recognition to parse government grant data. The script processes 1M+ nonprofit tax filings to create structured datasets of organizational financial information.
 
