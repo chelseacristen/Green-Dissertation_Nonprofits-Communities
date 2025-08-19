@@ -2,10 +2,16 @@
 
 This folder contains all R and Python files used to pre-process the datasets used for analysis in this dissertation project. These include:
 
-1: **step_1_creating_full_eobmf.R:** Created to process NCCS and NBER historical EO-BMF data files, clean them, create subsets, deduplicate them, and merge them together. 
+1: **nccs_nber_data_processing.R:** Comprehensive R-based data processing pipeline that standardizes, cleans, and merges nonprofit organizational data from National Center for Charitable Statistics (NCCS) and National Bureau of Economic Research (NBER) sources. The script harmonizes disparate data schemas, creates state-year subsets, performs multi-level deduplication, and generates analysis-ready datasets for longitudinal nonprofit research. *Dependencies: dplyr, stringr, data.table, qpcR
+Data Sources: NCCS Core Files, NBER EO-BMF extracts*
 
-2: **step_2_combining_990_eobmf.R:** Created to 1) clean and combine 990 and 990-EZ datasets from each year (2013 to 2020), 2) clean and combine all historical EO-BMF datasets, including de-duplication, and 3) merge these 990 datasets with EO-BMF data, bringing together organization-year level data containing Employer Identification numbers with organization-year level data containing addresses.
+2: **irs_data_integration.R:** Multi-source data integration system that processes and harmonizes IRS tax-exempt organization datasets, including Form 990, 990-EZ filings, Publication 78 deductibility records, and Exempt Organization Business Master Files (EO-BMF) from NBER. The script handles longitudinal data standardization across multiple filing formats and regulatory changes over time (2012-2022). *Dependencies: readxl, readr, stringr, dplyr 
+Data Sources: Combined EO-BMF data, IRS Statistics of Income, IRS Publication 78*
 
-3.**step_3_geocoding.py:** Created to geocode all 990 return .csvs that contain organization-year level financial return data and address data.
+3.**batch_geocoder.py:** ArcPy-based geocoding workflow that processes multiple CSV files containing address data, converts them to geographic coordinates using ArcGIS locator services, and exports results in multiple formats. The script automatically processes state-year combinations, creates organized output directories, and generates both shapefile and delimited text outputs. *Dependencies: arcpy, pandas, numpy
+Requirements: ArcGIS Desktop/Pro license, configured address locator*
 
-4. **scraping_990s.py:** Created to scrape all publicly available 990 tax return PDFs and output organization-year level datasets containing information on how much an organization reported receiving that tax year in government grant contributions. (Because these were computationally expensive to scrape, I wrote the script to create a dataset associated with each respective IRS tax filing year. These datasets were then combined to create a 2016-2022 organization-year level dataset on government grant contributions received).
+4. **census_tract_downloader.py**: Created automated web scraping and geospatial processing script that downloads all shapefiles from the Census Bureau's TIGER/Line database for 2000, 2010, and 2020 for Counties, Census Tracts, Census Block Groups, Congressional Districts, American Indian / Alaska Native / Native Hawaiian Areas 2020 (AIANNH), . The script scrapes file links, downloads state-specific zip archives, extracts shapefiles, and combines them into a single nationwide area-specific shapefiles for spatial analysis. *Dependencies: geopandas, pandas, beautifulsoup4, requests*
+   
+6. **irs_990_pdf_scraper.py:** Comprehensive web scraping and OCR pipeline that downloads IRS Form 990 PDF archives by year, extracts specific pages, converts them to images, and uses optical character recognition to parse government grant data. The script processes 1M+ nonprofit tax filings to create structured datasets of organizational financial information. *Dependencies: beautifulsoup4, requests, pypdf, pytesseract, pdf2image, PIL, pandas
+Requirements: Tesseract OCR installation, substantial storage space for PDF processing*
