@@ -23,7 +23,8 @@ Requirements: ArcGIS Desktop/Pro license, configured address locator*
 
 5: **Multi-Temporal Census Geography Standardization Pipeline (census_geography_standardizer.py):** : This script standardizes and harmonizes U.S. Census TIGER/Line shapefiles across three decades (2000, 2010, 2020) for five geographic levels: Census Tracts, Counties, Block Groups, Native American Areas, and Congressional Districts. The pipeline transforms raw census shapefiles into analysis-ready datasets with consistent schemas and organized file structure.
 
-*Dependencies: geopandas, pandas, os*
+*Dependencies: geopandas, pandas, os
+Input: Raw Census TIGER/Line shapefiles from downloader script*
    
 6: **IRS Form 990 PDF Data Extraction Script (irs_990_pdf_scraper.py):** Comprehensive web scraping and OCR pipeline that downloads IRS Form 990 PDF archives by year, extracts specific pages, converts them to images, and uses optical character recognition to parse government grant data. The script processes 1M+ nonprofit tax filings to create structured datasets of organizational financial information.
 
