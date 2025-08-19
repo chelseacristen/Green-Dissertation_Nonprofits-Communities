@@ -33,7 +33,13 @@ Requirements: ArcGIS Desktop/Pro license, configured address locator*
 Input: Geocoded nonprofit shapefiles, standardized Census boundary files
 Temporal Logic: Uses 2000 boundaries for 2000-2009 data, 2010 boundaries for 2010-2019 data, 2020 boundaries for 2020+ data*
 
-7: **IRS Form 990 PDF Data Extraction Script (irs_990_pdf_scraper.py):** Comprehensive web scraping and OCR pipeline that downloads IRS Form 990 PDF archives by year, extracts specific pages, converts them to images, and uses optical character recognition to parse government grant data. The script processes 1M+ nonprofit tax filings to create structured datasets of organizational financial information.
+7: **Geospatial Data Post-Processing and IRS Financial Integration Pipeline (nonprofit_data_integration_pipeline.py):** This script performs post-processing of spatially-attributed nonprofit datasets and integrates them with IRS financial filing data (Form 990 and 990-EZ). The pipeline standardizes geographic identifiers, cleans organizational identifiers, creates analysis-ready datasets at multiple scales, and merges in financial data for longitudinal nonprofit sector analysis.
+*Dependencies: pandas, os, re
+Input: Spatially-attributed nonprofit datasets, IRS Form 990/990-EZ financial data
+Scale: Processes datasets across 2000-2020 with financial integration for 2012-2020 period*
+
+
+8: **IRS Form 990 PDF Data Extraction Script (irs_990_pdf_scraper.py):** Comprehensive web scraping and OCR pipeline that downloads IRS Form 990 PDF archives by year, extracts specific pages, converts them to images, and uses optical character recognition to parse government grant data. The script processes 1M+ nonprofit tax filings to create structured datasets of organizational financial information.
 
 *Dependencies: beautifulsoup4, requests, pypdf, pytesseract, pdf2image, PIL, pandas
 Requirements: Tesseract OCR installation, substantial storage space for PDF processing*
