@@ -11,10 +11,10 @@ This repository contains a comprehensive data pipeline investigating the relatio
 - **Novel Contributions**: First quantitative analysis of redlining effects on nonprofit wealth
 
 ## 🛠️ Technical Implementation
-**Data Engineering**: Multi-source federal and nonprofit database integration (IRS, Census, ACS, NCCS, NBER, NCRC, SHELDUS)
-**Geospatial Analysis**: Census tract-level spatial modeling
-**OCR Pipeline**: Large-scale PDF processing of government filings
-**Machine Learning**: Advanced regression techniques for community impact prediction
+- **Data Engineering**: Multi-source federal and nonprofit database integration (IRS, Census, ACS, NCCS, NBER, NCRC, SHELDUS)
+- **Geospatial Analysis**: Census tract-level spatial modeling
+- **OCR Pipeline**: Large-scale PDF processing of government filings
+- **Machine Learning**: Advanced regression techniques for community impact prediction
 
 ## Abstract
 Amidst the confluence of rising inequality and increasing nonprofit wealth, is this increasing institutional wealth making a meaningful impact on communities? Furthermore, are nonprofit institutions in more marginalized communities more likely to receive funding, or less likely?
