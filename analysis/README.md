@@ -20,7 +20,7 @@ Key Functions:
 - LASSO regularization for automated feature selection across variable categories
 - Multi-model comparison framework testing organizational, environmental, demographic, and policy effects
 - Clustered and heteroskedasticity-consistent standard error corrections for geographic correlation
-- Race-organization interaction effects and multiple dependent variable specifications
+- Race-organization type interaction effects and multiple dependent variable specifications
 
 Methods:
 
