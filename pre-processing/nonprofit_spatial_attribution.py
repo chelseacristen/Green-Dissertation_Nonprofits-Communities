@@ -259,3 +259,132 @@ del(bgs00)
 del(ngos)
 del(ntjoin)
 print("spatial join complete")
+
+#Create joined folder and subfolders, v2. This version cleans up EINs and clarifies fips codes for different Census areas:
+joinedv2_dir = "your_directory" + '/Joinedv2' 
+joined_dir = "your_directory" + '/Joined' 
+os.mkdir(joinedv2_dir)
+
+for idx, folder in enumerate(os.listdir(joined_dir)):
+    #Create new joined subfolder in the version 2 folder:
+    newdir = os.path.join(joinedv2_dir,folder)
+    os.mkdir(newdir)
+     
+    #Save the name of the file containing NGO data I'm going to be working with in this iteration
+    file = os.listdir(os.path.join(joined_dir, folder))[0]
+    filepath = os.path.join(joined_dir, folder, file)
+    
+    #Create the name of my joined v2 file for later:
+    new =folder+'joinedv2.csv'
+    joinedv2_file = os.path.join(joinedv2_dir, folder, new)
+
+    #Load the file in from its respective Joined folder and subfolder:
+    ngos= pd.read_csv(filepath, low_memory=False)
+    
+    #1. Fix the EIN numbers so they are all 9 digits long. 
+    #Making sure that the EINs all have a length of 9 characters, starting with zeros if they are 8 or 7 characters long
+    ngos = ngos.astype({'USER_ein':'string'})
+    c = []
+    for ein in ngos['USER_ein']:
+        if(len(ein)==8):
+            c.append('0'+ein)
+        elif(len(ein)==7):
+            c.append('00'+ein)
+        else:
+            c.append(ein)
+    ngos['USER_ein'] = c
+    del(c)
+    
+    #Fixing the GEOIDs, making them just cleaner for future work.
+    #1. State ID- rename 'COSTATEFP' to 'statefips'
+    ngos = ngos.rename(columns={'COSTATEFP': 'STGEOID'})
+    
+    #Renaming fipscode columns for files merged specifically with 2000 census files to standardize them with 2010 and 2020 Census-based files
+    phrase = r"200.*" 
+    if(re.match(phrase, folder)):
+        ngos = ngos.rename(columns={'COCNTYIDFP': 'COGEOID'})
+        ngos = ngos.rename(columns={'TRCTIDFP': 'TRGEOID'})
+        ngos = ngos.rename(columns={'BGBKGPIDFP': 'BGGEOID'})
+        ngos = ngos.rename(columns={'NTAIANNHID': 'NTGEOID'})
+        
+    #For files from the 2000s, I actually have to create a congressional district geoid using pre-existing columns. 
+    #First, formatting existing columns to do this properly:
+        ngos = ngos.astype({'CDSTATEFP': 'string'})
+        new = []
+        for id in ngos['CDSTATEFP']:
+            if(len(id)==1):
+                new.append('0'+id)
+            else: 
+                new.append(id)   
+        ngos['CDSTATEFP'] = new
+    
+        ngos = ngos.astype({'CDFP': 'string'})
+        new = []
+        for id in ngos['CDFP']:
+            if(len(id)==1):
+                new.append('0'+id)
+            else: 
+                new.append(id)   
+        ngos['CDFP'] = new
+    
+        #Now finally creating the new CDGEOID column for files from 2000-2009:
+        ngos["CDGEOID"] = ngos[["CDSTATEFP", "CDFP"]].apply("".join, axis=1)
+    else:
+        new = []
+        ngos = ngos.astype({'CDGEOID': 'string'})
+        for id in ngos['CDGEOID']:
+            if(len(id)==3):
+                new.append('0'+id)
+            else: 
+                new.append(id)   
+        ngos['CDGEOID'] = new
+    
+    #Now making sure that all of my GEOID variables are string variables:
+    ngos = ngos.astype({'COGEOID': 'string', 'TRGEOID': 'string', 'BGGEOID': 'string'})
+
+    #fix countyfips so that if it is less than five digits, add a zero in front of it
+    new = []
+    for id in ngos['COGEOID']:
+        if(len(id)==4):
+            new.append('0'+id)
+        else: 
+            new.append(id)   
+    ngos['COGEOID'] = new
+
+    #fix tractfips so that if it is less than eleven digits, add a zero in front of it
+    new = []
+    for id in ngos['TRGEOID']:
+        if(len(id)==10):
+            new.append('0'+id)
+        else: 
+            new.append(id)   
+    ngos['TRGEOID'] = new
+
+    #fix bgfips so that if it is less than 12 digits, add a zero in front of it
+    new = []
+    for id in ngos['BGGEOID']:
+        if(len(id)==11):
+            new.append('0'+id)
+        else: 
+            new.append(id)   
+    ngos['BGGEOID'] = new
+    #Create new column: 'Nativearea': assign dummy variable 0/1 based on whether 'NTAIANNHCE' is NA or not. 
+    c = []
+    for id in ngos['NTAIANNHCE']:
+        if(pd.isna(id)):
+            c.append(0)
+        else:
+            c.append(1)
+    ngos = ngos.assign(NATIVEAREA=c)
+    
+    #Drop cases where input error occured (RegionAbbr is not the same as IN_Region) from the ngos dataframe:
+    index = ngos[(ngos['RegionAbbr'] != ngos['IN_Region']) ].index
+    ngos.drop(index, inplace=True)
+    
+    #Export the ngos dataframe to new csv in the Joined Folder, v2
+    ngos.to_csv(joinedv2_file)
+   
+    #Remove the dataframes to make space in memory for new ones
+    del(ngos)
+
+    print('done with ', folder)
