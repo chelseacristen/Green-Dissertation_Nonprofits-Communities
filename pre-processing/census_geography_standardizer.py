@@ -234,3 +234,25 @@ census_files = ["nativeareas_00", "nativeareas_10", "nativeareas_20", 'cd_00', '
 for i in census_files:
     os.mkdir(os.path.join(census_tidy, i))
 print('done')
+
+#Save the files as shp files:
+nativeareas00.to_file(os.path.join(census_tidy, census_files[0], census_files[0]+'_tidy.shp'))
+nativeareas10.to_file(os.path.join(census_tidy, census_files[1], census_files[1]+'_tidy.shp'))
+nativeareas20.to_file(os.path.join(census_tidy, census_files[2], census_files[2]+'_tidy.shp'))
+
+cd00.to_file(os.path.join(census_tidy, census_files[3], census_files[3]+'_tidy.shp'))
+cd10.to_file(os.path.join(census_tidy, census_files[4], census_files[4]+'_tidy.shp'))
+cd20.to_file(os.path.join(census_tidy, census_files[5], census_files[5]+'_tidy.shp'))
+
+bgs00.to_file(os.path.join(census_tidy, census_files[6], census_files[6]+'_tidy.shp'))
+bgs10.to_file(os.path.join(census_tidy, census_files[7], census_files[7]+'_tidy.shp'))
+bgs20.to_file(os.path.join(census_tidy, census_files[8], census_files[8]+'_tidy.shp'))
+
+counties00.to_file(os.path.join(census_tidy, census_files[9], census_files[9]+'_tidy.shp'))
+counties10.to_file(os.path.join(census_tidy, census_files[10], census_files[10]+'_tidy.shp'))
+counties20.to_file(os.path.join(census_tidy, census_files[11], census_files[11]+'_tidy.shp'))
+
+tracts00.to_file(os.path.join(census_tidy, census_files[12], census_files[12]+'_tidy.shp'))
+tracts10.to_file(os.path.join(census_tidy, census_files[13], census_files[13]+'_tidy.shp'))
+tracts20.to_file(os.path.join(census_tidy, census_files[14], census_files[14]+'_tidy.shp'))
+print("done")
