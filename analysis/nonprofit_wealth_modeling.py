@@ -1,4 +1,11 @@
-#EXPLAINING ASSETS_ADJ_LN:
+#EXPLAINING OUTCOME VARIABLE:
+yvariable = 'nonzero_assets_adj' #define yvariable
+dataset = 'ngos_sheldus' #define dataset
+weather='none' #define weather subset
+std_errors='cluster'
+cluster_category='COGEOID'
+directory='your_directory'
+
 pd.set_option('display.float_format', lambda x: '%.2f' % x)
 pd.set_option('display.max_rows', 1000)
 yvariable = 'assets_adj_ln'
