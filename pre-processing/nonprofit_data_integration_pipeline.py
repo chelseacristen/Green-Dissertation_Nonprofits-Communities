@@ -390,3 +390,36 @@ for y in years:
         print('next!')
     ngos.to_csv('your_directory/GeoJoined_990/EZ_'+str(y)+'.csv')
 
+#FOR 990s: Combined all geojoined csvs one at a time to make sure that the column names match.
+#CREATE FULL DOCUMENTATION FOR THIS
+df1 = pd.read_csv('your_directory/Geojoined_990/full_990_2012.csv')
+df2 = pd.read_csv('your_directory/Geojoined_990/full_990_2013.csv')
+
+df_990 = pd.read_csv('your_directory/Geojoined_990/full_990.csv')
+tax_pdmaxes = df_990.groupby(['tax_year', 'ein']).tax_pd.transform(max)
+df_990 = df_990.loc[df_990.tax_pd == tax_pdmaxes]
+df_990.to_csv('your_directory/Geojoined_990/full_990.csv')
+
+#FOR EZs: Combined all geojoined csvs one at a time to make sure that the column names match.
+#CREATE FULL DOCUMENTATION FOR THIS
+df1 = pd.read_csv('your_directory/Geojoined_990/EZ_2012.csv')
+df2 = pd.read_csv('your_directory/Geojoined_990/EZ_2013.csv')
+df1= pd.concat([df1, df2])
+df2 = pd.read_csv('your_directory/Geojoined_990/EZ_2014.csv')
+df1= pd.concat([df1, df2])
+df2 = pd.read_csv('your_directory/Geojoined_990/EZ_2015.csv')
+df1= pd.concat([df1, df2])
+df2 = pd.read_csv('your_directory/Geojoined_990/EZ_2016.csv')
+df1= pd.concat([df1, df2])
+df2 = pd.read_csv('your_directory/Geojoined_990/EZ_2017.csv')
+df1= pd.concat([df1, df2])
+df2 = pd.read_csv('your_directory/Geojoined_990/EZ_2018.csv')
+df1= pd.concat([df1, df2])
+df2 = pd.read_csv('your_directory/Geojoined_990/EZ_2019.csv')
+df1= pd.concat([df1, df2])
+df2 = pd.read_csv('your_directory/Geojoined_990/EZ_2020.csv')
+df1= pd.concat([df1, df2])
+tax_pdmaxes = df1.groupby(['tax_year', 'ein']).tax_pd.transform(max)
+df1 = df1.loc[df1.tax_pd == tax_pdmaxes]
+df1.to_csv('your_directory/Geojoined_990/full_EZ.csv')
+
