@@ -388,3 +388,79 @@ for idx, folder in enumerate(os.listdir(joined_dir)):
     del(ngos)
 
     print('done with ', folder)
+
+joinedv2_dir = "your_directory" + '/Joinedv2' 
+
+#Create new folder and subfolders to contain a MUCH scaled down version of the Joined folders and files. This will aid in data 
+#analysis later, namely reducing the size of all the files.
+mini_dir = "C:/Users/steve/Documents" + '/Mini_Joined'
+os.mkdir(mini_dir)
+
+for idx, folder in enumerate(os.listdir(joinedv2_dir)):
+    
+     #Create new joined subfolder in the mini version folder:
+    newdir = os.path.join(mini_dir, folder)
+    os.mkdir(newdir)
+    
+    #Save the name of the file containing NGO data I'm going to be working with in this iteration
+    file = os.listdir(os.path.join(joinedv2_dir, folder))[0]
+    filepath = os.path.join(joinedv2_dir, folder, file)
+    
+    #Create the name of my mini joined file for later:
+    new=folder+'minijoined.csv'
+    mini_file = os.path.join(mini_dir, folder, new)
+    
+    #Load the file in from its respective Joined folder and subfolder:
+    ngos= pd.read_csv(filepath, low_memory=False)
+   
+    #Drop cases where input error occured (RegionAbbr is not the same as IN_Region) from the ngos dataframe:
+    index = ngos[(ngos['RegionAbbr'] != ngos['IN_Region']) ].index
+    ngos.drop(index, inplace=True)
+    
+    #Creating a smaller dataset for more manageable data analysis:
+    #Subsetting to a limited number of columns:
+    mini_ngos = ngos[['Score', 'Match_addr', 'Addr_type', 'X', 'Y', 'USER_ein', 'USER_name', 'USER_stree', 'USER_city', 'USER_state', 'USER_zip', 'USER_subse', 'USER_rulin', 'USER_rul_1', 'USER_found', 'USER_tax_y', 'USER_tax_m', 'USER_ntee1', 'USER_acct_', 'USER_filin', 'USER_pf_fi', 'USER_asset', 'USER_incom', 'USER_sort_', 'geometry', 'STGEOID', 'COGEOID', 'TRGEOID', 'BGGEOID', 'CDGEOID', 'NTGEOID']]
+
+    #Rename columns in the mini_ngos file:
+    mini_ngos = mini_ngos.rename(columns={'USER_ein': 'ein', 'USER_name': 'name', 'USER_stree': 'street', 'USER_city': 'city', 'USER_state': 'state', 'USER_zip': 'zip', 'USER_subse': 'subsection', 'USER_rulin': 'rule_y', 'USER_rul_1': 'rule_m', 'USER_found': 'foundation', 'USER_tax_y': 'tax_year', 'USER_tax_m': 'tax_month', 'USER_ntee1': 'ntee1', 'USER_acct_': 'acct_pd', 'USER_filin': 'filing', 'USER_pf_fi': 'pf_filing', 'USER_asset': 'assets', 'USER_incom': 'income', 'USER_sort_': 'sort_name'})
+    
+    #Create new column: 'Nativearea': assign dummy variable 0/1 based on whether 'NTAIANNHCE' is NA or not. 
+    c = []
+    for id in ngos['NTGEOID']:
+        if(pd.isna(id)):
+            c.append(0)
+        else:
+            c.append(1)
+    ngos = ngos.assign(NATIVEAREA=c)
+    
+    #Save output to csv
+    mini_ngos.to_csv(mini_file)
+    
+    #Remove the dataframes to make space in memory for new ones
+    del(ngos)
+    del(mini_ngos)
+
+    print('done with ', folder)
+
+#Create a combined file of all of these csvs for 2010 onward:
+#Subset the number of files in my working directory to those with the years 2010 and beyond ONLY:
+#IF the first four numbers in the folder name are greater than 2010, save those folder names into a new list:
+
+mini_dir = "your_directory" + '/Mini_Joined'
+
+phrase = r"20[1-9]{1}[0-9]{1}[A-Z]{2}"
+counter=1
+
+for folder in os.listdir(mini_dir):
+    if(re.match(phrase, folder)):
+        if counter== 1:
+            ngos = pd.read_csv(os.path.join(mini_dir, folder, folder+'minijoined.csv'), low_memory=False)
+            counter=2
+        else:
+            ngos2 = pd.read_csv(os.path.join(mini_dir, folder, folder+'minijoined.csv'), low_memory=False)
+            ngos = pd.concat([ngos, ngos2])
+        print(folder, "done")
+
+#Export combined csv file:
+ngos.to_csv(os.path.join(mini_dir, 'mini_combined.csv'))
+print('final mini join exported')
