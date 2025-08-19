@@ -7,6 +7,8 @@ https://www.dropbox.com/scl/fi/t7siqkllywtgqk8r8gl5m/Geocoding-Data_2020.zip?rlk
 4. Census files folder: All Census (including American Community Survey) data as downloaded directly from the U.S. Census Bureau website.
 5. CPI folder: Consumer Price Index Retroactive Series (R-CPI-U-RS) data used to adjust all $-related variables to 2022 adjusted $ amounts.
 6. Redlining data folder: National Community Reinvestment Coalition (NCRC) historical redlining scores assigned to 2010 Census tracts.
+7. Link to a .csv file containing the tract-year level info for all spatially joined organization-year level filing data:
+   https://www.dropbox.com/scl/fi/3kp6fgv3hnk2131dx09xq/tractinfo.csv?rlkey=lirwpa848g1rg977r57r97hnx&st=mj6w0ic8&dl=0
 
 *A special note*: 
 
